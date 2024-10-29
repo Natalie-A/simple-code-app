@@ -1,0 +1,48 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: dev
+  name: dev-user-role
+rules:
+  - apiGroups: ["*"]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "watch", "list", "create", "update", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: prod
+  name: prod-user-role
+rules:
+  - apiGroups: ["*"]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-user-role-binding
+  namespace: dev
+subjects:
+  - kind: User
+    name: dev-user
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: dev-user-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prod-user-role-binding
+  namespace: prod
+subjects:
+  - kind: User
+    name: prod-user
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: prod-user-role
+  apiGroup: rbac.authorization.k8s.io
+

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-node-app
+  namespace: prod
+spec:
+  replicas: 2  
+  selector:
+    matchLabels:
+      app: simple-node-app
+  template:
+    metadata:
+      labels:
+        app: simple-node-app
+    spec:
+      serviceAccountName: api-user  
+      containers:
+      - name: simple-node-app
+        image: natalieaoya/simple-node-app
+        ports:
+        - containerPort: 3000
+
